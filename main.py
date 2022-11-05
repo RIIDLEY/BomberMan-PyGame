@@ -23,8 +23,6 @@ def play():
     while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
-        
-
         # PLAY_TEXT = get_font(45).render(
         #     "LE JEU", True, "White")
         # PLAY_RECT = PLAY_TEXT.get_rect(center=(640, 260))
