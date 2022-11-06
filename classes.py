@@ -18,7 +18,7 @@ class Niveau:
             for x, c in enumerate(line):
                 if (c==0):#Sol
                     print("Sol")
-                    self.screen.blit(image_sol, (x * 20, y * 20))
+                    self.screen.blit(image_sol, (x * 40, y * 40))
                 if (c==1):#Murs
                     print("Murs")
-                    self.screen.blit(image_brick, (x * 20, y * 20))
+                    self.screen.blit(image_brick, (x * 40, y * 40))
