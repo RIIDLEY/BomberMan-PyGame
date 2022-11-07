@@ -29,3 +29,6 @@ image_box = pygame.transform.scale(image_box, (40, 40))
 
 image_joueur = pygame.image.load("images/hero/pf1.png")
 image_joueur = pygame.transform.scale(image_joueur, (40, 40)) 
+
+image_bombe = pygame.image.load("images/bomb/1.png")
+image_bombe = pygame.transform.scale(image_bombe, (40, 40))
