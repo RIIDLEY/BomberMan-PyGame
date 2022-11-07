@@ -32,3 +32,4 @@ class Niveau:
                 if (c==1):#Murs
                     print("Murs")
                     self.screen.blit(image_brick, (x * self.x, y * self.y))
+        print("Fin génération")
