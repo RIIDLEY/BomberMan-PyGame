@@ -47,11 +47,16 @@ def play():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    joueur.move_left()
-                    print("gauche")
                 if event.key == pygame.K_RIGHT:
-                    print("droite")
+                    if(niveau.move_right(joueur1)):
+                        niveau.updateLvl()
+                        niveau.printstructure()
+                        print("droite")
+                if event.key == pygame.K_LEFT:
+                    if(niveau.move_left(joueur1)):
+                        niveau.updateLvl()
+                        niveau.printstructure()
+                        print("gauche")
 
         pygame.display.update()
 

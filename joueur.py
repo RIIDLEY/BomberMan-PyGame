@@ -11,8 +11,8 @@ class joueur:
         """initialisation des variables de la class"""
         self.id = randrange(10, 1000)
         self.speed = 1
-        self.ligne = 1
-        self.colonne = 1
+        self.ligne = 0
+        self.colonne = 0
         self.sprit = image_joueur
         print("Init Joueur")
 
