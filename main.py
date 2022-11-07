@@ -1,6 +1,7 @@
 import pygame
 import sys
-from classes import *
+from niveau import *
+from joueur import *
 from button import Button
 
 pygame.init()
@@ -20,6 +21,13 @@ def play():
     niveau = Niveau()
     niveau.generer()
 
+    if(niveau.init):
+        print("Init OK")
+        joueur1 = joueur()
+        niveau.add_joueur(joueur1)
+        niveau.updateLvl()
+        niveau.printstructure()
+
     while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
@@ -34,12 +42,16 @@ def play():
         # PLAY_BACK.changeColor(PLAY_MOUSE_POS)
         # PLAY_BACK.update(SCREEN)
 
-
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    joueur.move_left()
+                    print("gauche")
+                if event.key == pygame.K_RIGHT:
+                    print("droite")
 
         pygame.display.update()
 
