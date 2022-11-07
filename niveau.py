@@ -87,3 +87,21 @@ class Niveau:
             joueur.colonne -= 1
             return True
         return False
+
+    def move_up(self, joueur):
+        print("Move up")
+        if (self.structure[joueur.ligne - 1][joueur.colonne] == 0 or self.structure[joueur.ligne - 1][joueur.colonne] == 8 or self.structure[joueur.ligne - 1][joueur.colonne] == 9):
+            self.structure[joueur.ligne][joueur.colonne] = 0
+            self.structure[joueur.ligne - 1][joueur.colonne] = joueur.id
+            joueur.ligne -= 1
+            return True
+        return False
+    
+    def move_down(self, joueur):
+        print("Move down")
+        if (self.structure[joueur.ligne + 1][joueur.colonne] == 0 or self.structure[joueur.ligne + 1][joueur.colonne] == 8 or self.structure[joueur.ligne + 1][joueur.colonne] == 9):
+            self.structure[joueur.ligne][joueur.colonne] = 0
+            self.structure[joueur.ligne + 1][joueur.colonne] = joueur.id
+            joueur.ligne += 1
+            return True
+        return False
