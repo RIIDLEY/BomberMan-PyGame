@@ -13,6 +13,8 @@ class joueur:
         self.speed = 1
         self.ligne = 0
         self.colonne = 0
+        self.last_ligne = 0
+        self.last_colonne = 0
         self.sprit = image_joueur
         print("Init Joueur")
 
@@ -24,6 +26,8 @@ class joueur:
 
     def move_up(self, niveau):
         if (niveau.structure[self.ligne - 1][self.colonne] != 1 and niveau.structure[self.ligne - 1][self.colonne] != 2):
+            self.last_colonne = self.colonne
+            self.last_ligne = self.ligne
             niveau.structure[self.ligne][self.colonne] = 0
             self.ligne -= 1
             niveau.structure[self.ligne][self.colonne] = self.id

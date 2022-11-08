@@ -69,3 +69,5 @@ class Niveau:
                     self.screen.blit(self.arrayJoueur[c].get_sprite(), (x * self.x, y * self.y))
                 if (c == 0):
                     self.screen.blit(image_sol, (x * self.x, y * self.y))
+                if (c == 3):
+                    self.screen.blit(image_bombe, (x * self.x, y * self.y))

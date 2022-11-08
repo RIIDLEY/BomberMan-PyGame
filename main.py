@@ -2,6 +2,7 @@ import pygame
 import sys
 from niveau import *
 from joueur import *
+from bombe import *
 from button import Button
 
 pygame.init()
@@ -56,6 +57,8 @@ def play():
                 if event.key == pygame.K_DOWN:
                     joueur1.move_down(niveau)
                 if event.key == pygame.K_SPACE:
+                    bombe1 = bombe()
+                    bombe1.set_bombe(joueur1, niveau)
                     print("BOMBE")
         pygame.display.update()
 
