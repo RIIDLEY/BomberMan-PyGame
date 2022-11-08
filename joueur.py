@@ -21,3 +21,43 @@ class joueur:
 
     def get_sprite(self):
         return self.sprit
+
+    def move_up(self, niveau):
+        if (niveau.structure[self.ligne - 1][self.colonne] != 1 and niveau.structure[self.ligne - 1][self.colonne] != 2):
+            niveau.structure[self.ligne][self.colonne] = 0
+            self.ligne -= 1
+            niveau.structure[self.ligne][self.colonne] = self.id
+            niveau.updateLvl()
+            print("Move up YES")
+        else:
+            print("Move up NO")
+
+    def move_down(self, niveau):
+        if (niveau.structure[self.ligne + 1][self.colonne] != 1 and niveau.structure[self.ligne + 1][self.colonne] != 2):
+            niveau.structure[self.ligne][self.colonne] = 0
+            self.ligne += 1
+            niveau.structure[self.ligne][self.colonne] = self.id
+            niveau.updateLvl()
+            print("Move down YES")
+        else:
+            print("Move down NO")
+
+    def move_left(self, niveau):
+        if (niveau.structure[self.ligne][self.colonne - 1] != 1 and niveau.structure[self.ligne][self.colonne - 1] != 2):
+            niveau.structure[self.ligne][self.colonne] = 0
+            self.colonne -= 1
+            niveau.structure[self.ligne][self.colonne] = self.id
+            niveau.updateLvl()
+            print("Move left YES")
+        else:
+            print("Move left NO")
+
+    def move_right(self, niveau):
+        if (niveau.structure[self.ligne][self.colonne + 1] != 1 and niveau.structure[self.ligne][self.colonne + 1] != 2):
+            niveau.structure[self.ligne][self.colonne] = 0
+            self.colonne += 1
+            niveau.structure[self.ligne][self.colonne] = self.id
+            niveau.updateLvl()
+            print("Move right YES")
+        else:
+            print("Move right NO")

@@ -48,21 +48,13 @@ def play():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
-                    if(niveau.move_right(joueur1)):
-                        niveau.updateLvl()
-                        print("droite")
+                    joueur1.move_right(niveau)
                 if event.key == pygame.K_LEFT:
-                    if(niveau.move_left(joueur1)):
-                        niveau.updateLvl()
-                        print("gauche")
+                    joueur1.move_left(niveau)
                 if event.key == pygame.K_UP:
-                    if(niveau.move_up(joueur1)):
-                        niveau.updateLvl()
-                        print("monte")
+                    joueur1.move_up(niveau)
                 if event.key == pygame.K_DOWN:
-                    if(niveau.move_down(joueur1)):
-                        niveau.updateLvl()
-                        print("descend")
+                    joueur1.move_down(niveau)
                 if event.key == pygame.K_SPACE:
                     print("BOMBE")
         pygame.display.update()
