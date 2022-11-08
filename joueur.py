@@ -25,43 +25,42 @@ class joueur:
         return self.sprit
 
     def move_up(self, niveau):
-        if (niveau.structure[self.ligne - 1][self.colonne] != 1 and niveau.structure[self.ligne - 1][self.colonne] != 2):
+        if (niveau.structure[self.ligne - 1][self.colonne] != 1 and niveau.structure[self.ligne - 1][self.colonne] != 2 and niveau.structure[self.ligne - 1][self.colonne] != 3):
+            niveau.structure[self.ligne][self.colonne] = 0
             self.last_colonne = self.colonne
             self.last_ligne = self.ligne
-            niveau.structure[self.ligne][self.colonne] = 0
             self.ligne -= 1
             niveau.structure[self.ligne][self.colonne] = self.id
             niveau.updateLvl()
-            print("Move up YES")
-        else:
-            print("Move up NO")
+            #print("Move up YES")
 
     def move_down(self, niveau):
-        if (niveau.structure[self.ligne + 1][self.colonne] != 1 and niveau.structure[self.ligne + 1][self.colonne] != 2):
+        if (niveau.structure[self.ligne + 1][self.colonne] != 1 and niveau.structure[self.ligne + 1][self.colonne] != 2 and niveau.structure[self.ligne + 1][self.colonne] != 3):
             niveau.structure[self.ligne][self.colonne] = 0
+            self.last_colonne = self.colonne
+            self.last_ligne = self.ligne
             self.ligne += 1
             niveau.structure[self.ligne][self.colonne] = self.id
             niveau.updateLvl()
-            print("Move down YES")
-        else:
-            print("Move down NO")
+            #print("Move down YES")
 
     def move_left(self, niveau):
-        if (niveau.structure[self.ligne][self.colonne - 1] != 1 and niveau.structure[self.ligne][self.colonne - 1] != 2):
+        if (niveau.structure[self.ligne][self.colonne - 1] != 1 and niveau.structure[self.ligne][self.colonne - 1] != 2 and niveau.structure[self.ligne][self.colonne - 1] != 3):
             niveau.structure[self.ligne][self.colonne] = 0
+            self.last_colonne = self.colonne
+            self.last_ligne = self.ligne
             self.colonne -= 1
             niveau.structure[self.ligne][self.colonne] = self.id
             niveau.updateLvl()
-            print("Move left YES")
-        else:
-            print("Move left NO")
+            #print("Move left YES")
+
 
     def move_right(self, niveau):
-        if (niveau.structure[self.ligne][self.colonne + 1] != 1 and niveau.structure[self.ligne][self.colonne + 1] != 2):
+        if (niveau.structure[self.ligne][self.colonne + 1] != 1 and niveau.structure[self.ligne][self.colonne + 1] != 2 and niveau.structure[self.ligne][self.colonne + 1] != 3):
             niveau.structure[self.ligne][self.colonne] = 0
+            self.last_colonne = self.colonne
+            self.last_ligne = self.ligne
             self.colonne += 1
             niveau.structure[self.ligne][self.colonne] = self.id
             niveau.updateLvl()
-            print("Move right YES")
-        else:
-            print("Move right NO")
+            #print("Move right YES")

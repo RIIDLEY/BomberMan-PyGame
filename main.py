@@ -57,9 +57,10 @@ def play():
                 if event.key == pygame.K_DOWN:
                     joueur1.move_down(niveau)
                 if event.key == pygame.K_SPACE:
+                    print("BOMBE")
                     bombe1 = bombe()
                     bombe1.set_bombe(joueur1, niveau)
-                    print("BOMBE")
+                    bombe1.explose(niveau)
         pygame.display.update()
 
 

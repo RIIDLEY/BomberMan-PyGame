@@ -62,7 +62,7 @@ class Niveau:
             print("\r")
 
     def updateLvl(self):
-        print("Update Niveau")
+        #print("Update Niveau")
         for y, line in enumerate(self.structure):
             for x, c in enumerate(line):
                 if (c >= 10):
@@ -70,4 +70,5 @@ class Niveau:
                 if (c == 0):
                     self.screen.blit(image_sol, (x * self.x, y * self.y))
                 if (c == 3):
+                    self.screen.blit(image_sol, (x * self.x, y * self.y))
                     self.screen.blit(image_bombe, (x * self.x, y * self.y))

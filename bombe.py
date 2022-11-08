@@ -16,11 +16,12 @@ class bombe:
         print("Init bombe")
 
     def set_bombe(self, joueur, niveau):
-        niveau.structure[joueur.ligne][joueur.colonne] = self.id
+        niveau.structure[joueur.ligne][joueur.colonne] = 3
         joueur.ligne = joueur.last_ligne
         joueur.colonne = joueur.last_colonne
         niveau.structure[joueur.ligne][joueur.colonne] = joueur.id
         niveau.updateLvl()
+        niveau.printstructure()
 
     
     def get_sprite(self):
