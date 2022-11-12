@@ -15,7 +15,8 @@ class Niveau:
         self.y = 40
         self.init = False
         self.arrayJoueur = {}
-        self.screen = pygame.display.set_mode((1280, 720))
+        self.arrayBombes = {}
+        self.screen = pygame.display.set_mode((520, 520))
         self.structure = grid
         print("Init Niveau")
 
@@ -45,8 +46,13 @@ class Niveau:
     def set_pos_joueur(self, ligne, colonne, joueur):
         self.structure[ligne][colonne] = joueur.id
 
+    def add_bombe(self, bombe):
+        self.arrayBombes[bombe.id] = bombe
+        print(self.arrayBombes)
+
     def add_joueur(self, joueur):
         self.arrayJoueur[joueur.id] = joueur
+        self.add_bombe(joueur.bombe)
         for y, line in enumerate(self.structure):
             for x, c in enumerate(line):
                 if (c == 9):
@@ -65,10 +71,10 @@ class Niveau:
         #print("Update Niveau")
         for y, line in enumerate(self.structure):
             for x, c in enumerate(line):
-                if (c >= 10):
+                if (c > 10 and c < 20):#Joueur
                     self.screen.blit(self.arrayJoueur[c].get_sprite(), (x * self.x, y * self.y))
                 if (c == 0):
                     self.screen.blit(image_sol, (x * self.x, y * self.y))
-                if (c == 3):
+                if (c > 20 and c < 30):#Bombe
                     self.screen.blit(image_sol, (x * self.x, y * self.y))
-                    self.screen.blit(image_bombe, (x * self.x, y * self.y))
+                    self.screen.blit(self.arrayBombes[c].get_sprite(), (x * self.x, y * self.y))

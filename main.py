@@ -1,3 +1,4 @@
+import threading
 import pygame
 import sys
 from niveau import *
@@ -57,10 +58,12 @@ def play():
                 if event.key == pygame.K_DOWN:
                     joueur1.move_down(niveau)
                 if event.key == pygame.K_SPACE:
-                    print("BOMBE")
-                    bombe1 = bombe()
-                    bombe1.set_bombe(joueur1, niveau)
-                    bombe1.explose(niveau)
+                    if(joueur1.bombe.get_planted()==False):
+                        joueur1.get_bombe().set_bombe(joueur1, niveau)
+                        event = threading.Event()
+                        thread = threading.Thread(target=joueur1.get_bombe().explose, args=(niveau,event))
+                        thread.start()
+                        #bombe1.explose(niveau)
         pygame.display.update()
 
 

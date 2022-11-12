@@ -1,6 +1,7 @@
 import pygame
 from constant import *
-from random import *
+import random as rand
+from bombe import *
 import time
 import calendar
 
@@ -9,13 +10,14 @@ class joueur:
 
     def __init__(self):
         """initialisation des variables de la class"""
-        self.id = randrange(10, 1000)
+        self.id =  rand.randint(11,19)
         self.speed = 1
         self.ligne = 0
         self.colonne = 0
         self.last_ligne = 0
         self.last_colonne = 0
         self.sprit = image_joueur
+        self.bombe = bombe()
         print("Init Joueur")
 
     def get_pos(self):
@@ -23,6 +25,9 @@ class joueur:
 
     def get_sprite(self):
         return self.sprit
+
+    def get_bombe(self):
+        return self.bombe
 
     def move_up(self, niveau):
         if (niveau.structure[self.ligne - 1][self.colonne] != 1 and niveau.structure[self.ligne - 1][self.colonne] != 2 and niveau.structure[self.ligne - 1][self.colonne] != 3):
