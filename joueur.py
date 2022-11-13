@@ -8,7 +8,7 @@ import calendar
 class joueur:
     """class du joueur"""
 
-    def __init__(self):
+    def __init__(self, sprite):
         """initialisation des variables de la class"""
         self.id =  rand.randint(11,19)
         self.speed = 1
@@ -17,7 +17,7 @@ class joueur:
         self.last_ligne = 0
         self.last_colonne = 0
         self.vivant = True
-        self.sprit = image_joueur
+        self.sprit = sprite
         self.bombe = bombe()
         print("Init Joueur")
 
@@ -31,7 +31,7 @@ class joueur:
         return self.bombe
 
     def move_up(self, niveau):
-        if (niveau.structure[self.ligne - 1][self.colonne] != 1 and niveau.structure[self.ligne - 1][self.colonne] != 2 and niveau.structure[self.ligne - 1][self.colonne] != 3):
+        if (niveau.structure[self.ligne - 1][self.colonne] != 1 and niveau.structure[self.ligne - 1][self.colonne] != 2 and niveau.structure[self.ligne - 1][self.colonne] != 3 and niveau.structure[self.ligne - 1][self.colonne] < 10):
             niveau.structure[self.ligne][self.colonne] = 0
             self.last_colonne = self.colonne
             self.last_ligne = self.ligne
@@ -41,7 +41,7 @@ class joueur:
             #print("Move up YES")
 
     def move_down(self, niveau):
-        if (niveau.structure[self.ligne + 1][self.colonne] != 1 and niveau.structure[self.ligne + 1][self.colonne] != 2 and niveau.structure[self.ligne + 1][self.colonne] != 3):
+        if (niveau.structure[self.ligne + 1][self.colonne] != 1 and niveau.structure[self.ligne + 1][self.colonne] != 2 and niveau.structure[self.ligne + 1][self.colonne] != 3 and niveau.structure[self.ligne + 1][self.colonne] < 10):
             niveau.structure[self.ligne][self.colonne] = 0
             self.last_colonne = self.colonne
             self.last_ligne = self.ligne
@@ -51,7 +51,7 @@ class joueur:
             #print("Move down YES")
 
     def move_left(self, niveau):
-        if (niveau.structure[self.ligne][self.colonne - 1] != 1 and niveau.structure[self.ligne][self.colonne - 1] != 2 and niveau.structure[self.ligne][self.colonne - 1] != 3):
+        if (niveau.structure[self.ligne][self.colonne - 1] != 1 and niveau.structure[self.ligne][self.colonne - 1] != 2 and niveau.structure[self.ligne][self.colonne - 1] != 3 and niveau.structure[self.ligne][self.colonne - 1] < 10):
             niveau.structure[self.ligne][self.colonne] = 0
             self.last_colonne = self.colonne
             self.last_ligne = self.ligne
@@ -62,7 +62,7 @@ class joueur:
 
 
     def move_right(self, niveau):
-        if (niveau.structure[self.ligne][self.colonne + 1] != 1 and niveau.structure[self.ligne][self.colonne + 1] != 2 and niveau.structure[self.ligne][self.colonne + 1] != 3):
+        if (niveau.structure[self.ligne][self.colonne + 1] != 1 and niveau.structure[self.ligne][self.colonne + 1] != 2 and niveau.structure[self.ligne][self.colonne + 1] != 3 and niveau.structure[self.ligne][self.colonne + 1] < 10):
             niveau.structure[self.ligne][self.colonne] = 0
             self.last_colonne = self.colonne
             self.last_ligne = self.ligne

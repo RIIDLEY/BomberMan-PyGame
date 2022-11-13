@@ -25,7 +25,7 @@ def play():
 
     if(niveau.init):
         print("Init OK")
-        joueur1 = joueur()
+        joueur1 = joueur(image_joueur1)
         niveau.add_joueur(joueur1)
         niveau.updateLvl()
         niveau.printstructure()
