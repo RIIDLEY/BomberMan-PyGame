@@ -16,6 +16,7 @@ class joueur:
         self.colonne = 0
         self.last_ligne = 0
         self.last_colonne = 0
+        self.vivant = True
         self.sprit = image_joueur
         self.bombe = bombe()
         print("Init Joueur")
@@ -69,3 +70,6 @@ class joueur:
             niveau.structure[self.ligne][self.colonne] = self.id
             niveau.updateLvl()
             #print("Move right YES")
+
+    def mort(self):
+        self.vivant = False

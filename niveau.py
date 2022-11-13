@@ -73,8 +73,21 @@ class Niveau:
             for x, c in enumerate(line):
                 if (c > 10 and c < 20):#Joueur
                     self.screen.blit(self.arrayJoueur[c].get_sprite(), (x * self.x, y * self.y))
-                if (c == 0):
+                if (c == 0):#sol
                     self.screen.blit(image_sol, (x * self.x, y * self.y))
                 if (c > 20 and c < 30):#Bombe
                     self.screen.blit(image_sol, (x * self.x, y * self.y))
                     self.screen.blit(self.arrayBombes[c].get_sprite(), (x * self.x, y * self.y))
+                if (c == 3):
+                    self.screen.blit(image_sol, (x * self.x, y * self.y))
+                    self.screen.blit(image_explosion_haut, (x * self.x, y * self.y))
+                if (c == 4):
+                    self.screen.blit(image_sol, (x * self.x, y * self.y))
+                    self.screen.blit(image_explosion_bas, (x * self.x, y * self.y))
+                if (c == 5):
+                    self.screen.blit(image_sol, (x * self.x, y * self.y))
+                    self.screen.blit(image_explosion_gauche, (x * self.x, y * self.y))
+                if (c == 6):
+                    self.screen.blit(image_sol, (x * self.x, y * self.y))
+                    self.screen.blit(image_explosion_droite, (x * self.x, y * self.y))
+                

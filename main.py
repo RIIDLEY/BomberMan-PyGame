@@ -49,15 +49,15 @@ def play():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT and joueur1.vivant==True:
                     joueur1.move_right(niveau)
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT and joueur1.vivant==True:
                     joueur1.move_left(niveau)
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_UP and joueur1.vivant==True:
                     joueur1.move_up(niveau)
-                if event.key == pygame.K_DOWN:
+                if event.key == pygame.K_DOWN and joueur1.vivant==True:
                     joueur1.move_down(niveau)
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE and joueur1.vivant==True:
                     if(joueur1.bombe.get_planted()==False):
                         joueur1.get_bombe().set_bombe(joueur1, niveau)
                         event = threading.Event()
