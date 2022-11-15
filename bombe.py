@@ -36,7 +36,7 @@ class bombe:
     
     def explose(self, niveau, event):
         if (self.planted == True):
-            event.wait(5)
+            event.wait(1)
             print("Explosion")
             #playsound('sounds\explosion.mp3')
             self.planted = False

@@ -4,6 +4,7 @@ import sys
 from niveau import *
 from joueur import *
 from bombe import *
+from ia import *
 from button import Button
 
 pygame.init()
@@ -27,10 +28,20 @@ def play():
         print("Init OK")
         joueur1 = joueur(image_joueur1)
         joueur2 = joueur(image_joueur2)
+        joueur3 = joueur(image_joueur3)
+
+        ia1 = ia(joueur3)
+
         niveau.add_joueur(joueur1)
         niveau.add_joueur(joueur2)
+        niveau.add_joueur(joueur3)
+
+
         niveau.updateLvl()
-        niveau.printstructure()
+
+        event_ia1 = threading.Event()
+        thread_ia1 = threading.Thread(target=ia1.move, args=(niveau,event_ia1))
+        thread_ia1.start()
 
     while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
@@ -66,9 +77,9 @@ def play():
                 if event.key == pygame.K_SPACE and joueur1.vivant==True:
                     if(joueur1.bombe.get_planted()==False):
                         joueur1.get_bombe().set_bombe(joueur1, niveau)
-                        event1 = threading.Event()
-                        thread = threading.Thread(target=joueur1.get_bombe().explose, args=(niveau,event1))
-                        thread.start()
+                        event_joueur1 = threading.Event()
+                        thread_joueur1 = threading.Thread(target=joueur1.get_bombe().explose, args=(niveau,event_joueur1))
+                        thread_joueur1.start()
                         if(niveau.partie_end()):
                             game_over()
                         #bombe1.explose(niveau)
@@ -85,9 +96,9 @@ def play():
                 if event.key == pygame.K_LSHIFT and joueur2.vivant==True:
                     if(joueur2.bombe.get_planted()==False):
                         joueur2.get_bombe().set_bombe(joueur2, niveau)
-                        event2 = threading.Event()
-                        thread = threading.Thread(target=joueur2.get_bombe().explose, args=(niveau,event2))
-                        thread.start()
+                        event_joueur2 = threading.Event()
+                        thread_joueur2 = threading.Thread(target=joueur2.get_bombe().explose, args=(niveau,event_joueur2))
+                        thread_joueur2.start()
                         #bombe2.explose(niveau)
         pygame.display.update()
 

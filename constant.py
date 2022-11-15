@@ -43,6 +43,9 @@ image_joueur1 = pygame.transform.scale(image_joueur1, (40, 40))
 image_joueur2 = pygame.image.load("images/enemy/e1f0.png")
 image_joueur2 = pygame.transform.scale(image_joueur2, (40, 40))
 
+image_joueur3 = pygame.image.load("images/enemy/e3f0.png")
+image_joueur3 = pygame.transform.scale(image_joueur3, (40, 40))
+
 image_bombe = pygame.image.load("images/bomb/1.png")
 image_bombe = pygame.transform.scale(image_bombe, (40, 40))
 
