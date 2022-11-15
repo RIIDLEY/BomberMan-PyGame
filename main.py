@@ -26,7 +26,9 @@ def play():
     if(niveau.init):
         print("Init OK")
         joueur1 = joueur(image_joueur1)
+        joueur2 = joueur(image_joueur2)
         niveau.add_joueur(joueur1)
+        niveau.add_joueur(joueur2)
         niveau.updateLvl()
         niveau.printstructure()
 
@@ -44,11 +46,15 @@ def play():
         # PLAY_BACK.changeColor(PLAY_MOUSE_POS)
         # PLAY_BACK.update(SCREEN)
 
+        if(niveau.partie_end()):
+            game_over()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                # Joueur 1
                 if event.key == pygame.K_RIGHT and joueur1.vivant==True:
                     joueur1.move_right(niveau)
                 if event.key == pygame.K_LEFT and joueur1.vivant==True:
@@ -60,10 +66,29 @@ def play():
                 if event.key == pygame.K_SPACE and joueur1.vivant==True:
                     if(joueur1.bombe.get_planted()==False):
                         joueur1.get_bombe().set_bombe(joueur1, niveau)
-                        event = threading.Event()
-                        thread = threading.Thread(target=joueur1.get_bombe().explose, args=(niveau,event))
+                        event1 = threading.Event()
+                        thread = threading.Thread(target=joueur1.get_bombe().explose, args=(niveau,event1))
                         thread.start()
+                        if(niveau.partie_end()):
+                            game_over()
                         #bombe1.explose(niveau)
+
+                # Joueur 2
+                if event.key == pygame.K_d and joueur2.vivant==True:
+                    joueur2.move_right(niveau)
+                if event.key == pygame.K_q and joueur2.vivant==True:
+                    joueur2.move_left(niveau)
+                if event.key == pygame.K_z and joueur2.vivant==True:
+                    joueur2.move_up(niveau)
+                if event.key == pygame.K_s and joueur2.vivant==True:
+                    joueur2.move_down(niveau)
+                if event.key == pygame.K_LSHIFT and joueur2.vivant==True:
+                    if(joueur2.bombe.get_planted()==False):
+                        joueur2.get_bombe().set_bombe(joueur2, niveau)
+                        event2 = threading.Event()
+                        thread = threading.Thread(target=joueur2.get_bombe().explose, args=(niveau,event2))
+                        thread.start()
+                        #bombe2.explose(niveau)
         pygame.display.update()
 
 
@@ -129,6 +154,34 @@ def main_menu():
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
+
+        pygame.display.update()
+
+
+def game_over():
+    while True:
+        GAME_OVER_MOUSE_POS = pygame.mouse.get_pos()
+        SCREEN = pygame.display.set_mode((1280, 720))
+        SCREEN.fill("white")
+
+        GAME_OVER_TEXT = get_font(45).render(
+            "GAME OVER", True, "Black")
+        GAME_OVER_RECT = GAME_OVER_TEXT.get_rect(center=(640, 260))
+        SCREEN.blit(GAME_OVER_TEXT, GAME_OVER_RECT)
+
+        GAME_OVER_BACK = Button(image=None, pos=(640, 460),
+                                text_input="Menu", font=get_font(75), base_color="Black", hovering_color="Green")
+
+        GAME_OVER_BACK.changeColor(GAME_OVER_MOUSE_POS)
+        GAME_OVER_BACK.update(SCREEN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if GAME_OVER_BACK.checkForInput(GAME_OVER_MOUSE_POS):
+                    main_menu()
 
         pygame.display.update()
 

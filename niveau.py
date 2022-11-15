@@ -90,4 +90,13 @@ class Niveau:
                 if (c == 6):
                     self.screen.blit(image_sol, (x * self.x, y * self.y))
                     self.screen.blit(image_explosion_droite, (x * self.x, y * self.y))
-                
+    
+    def partie_end(self):
+        nb = 0
+        for i in self.arrayJoueur:
+            if(self.arrayJoueur[i].vivant):
+                nb+=1
+        if(nb<2):
+            return True
+        else:
+            return False
