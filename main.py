@@ -36,15 +36,10 @@ def play():
         niveau.add_joueur(joueur2)
         niveau.add_joueur(joueur3)
 
-
         niveau.updateLvl()
 
-        event_ia1 = threading.Event()
-        thread_ia1 = threading.Thread(target=ia1.move, args=(niveau,event_ia1))
-        thread_ia1.start()
-
     while True:
-        PLAY_MOUSE_POS = pygame.mouse.get_pos()
+        #PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
         # PLAY_TEXT = get_font(45).render(
         #     "LE JEU", True, "White")

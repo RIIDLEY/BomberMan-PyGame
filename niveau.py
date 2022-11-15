@@ -48,7 +48,6 @@ class Niveau:
 
     def add_bombe(self, bombe):
         self.arrayBombes[bombe.id] = bombe
-        print(self.arrayBombes)
 
     def add_joueur(self, joueur):
         self.arrayJoueur[joueur.id] = joueur

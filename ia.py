@@ -18,7 +18,7 @@ class ia:
             self.possible["gauche"] = True
 
     def move(self, niveau, event):
-        event.wait(10)
+        event.wait(5)
         self.scan_map(niveau)
         tmpKey, tmpVal = rand.choice(list(self.possible.items()))
         if tmpVal == True:
