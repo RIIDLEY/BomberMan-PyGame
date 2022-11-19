@@ -18,9 +18,13 @@ class ia:
             self.possible["gauche"] = True
 
     def move(self, niveau, event):
-        event.wait(5)
+        event.wait(0.1)
         self.scan_map(niveau)
         tmpKey, tmpVal = rand.choice(list(self.possible.items()))
+
+        while tmpVal == False:
+            tmpKey, tmpVal = rand.choice(list(self.possible.items()))
+
         if tmpVal == True:
             if tmpKey == "bas":
                 self.joueur.move_down(niveau)
@@ -29,4 +33,4 @@ class ia:
             elif tmpKey == "droite":
                 self.joueur.move_right(niveau)
             elif tmpKey == "gauche":
-                self.joueur.move_left(niveau)
+                self.joueur.move_left(niveau) 

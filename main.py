@@ -52,6 +52,11 @@ def play():
         # PLAY_BACK.changeColor(PLAY_MOUSE_POS)
         # PLAY_BACK.update(SCREEN)
 
+        if(ia1.joueur.vivant):
+            event_ia1 = threading.Event()
+            thread_ia1 = threading.Thread(target=ia1.move(niveau,event_ia1), args=(niveau,event_ia1))
+            thread_ia1.start()
+
         if(niveau.partie_end()):
             game_over()
 
@@ -60,6 +65,8 @@ def play():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    main_menu()
                 # Joueur 1
                 if event.key == pygame.K_RIGHT and joueur1.vivant==True:
                     joueur1.move_right(niveau)
