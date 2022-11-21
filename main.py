@@ -29,12 +29,15 @@ def play():
         joueur1 = joueur(image_joueur1)
         joueur2 = joueur(image_joueur2)
         joueur3 = joueur(image_joueur3)
+        joueur4 = joueur(image_joueur4)
 
         ia1 = ia(joueur3)
+        ia2 = ia(joueur4)
 
         niveau.add_joueur(joueur1)
         niveau.add_joueur(joueur2)
         niveau.add_joueur(joueur3)
+        niveau.add_joueur(joueur4)
 
         niveau.updateLvl()
 
@@ -52,10 +55,7 @@ def play():
         # PLAY_BACK.changeColor(PLAY_MOUSE_POS)
         # PLAY_BACK.update(SCREEN)
 
-        if(ia1.joueur.vivant):
-            event_ia1 = threading.Event()
-            thread_ia1 = threading.Thread(target=ia1.move(niveau,event_ia1), args=(niveau,event_ia1))
-            thread_ia1.start()
+
 
         if(niveau.partie_end()):
             game_over()
@@ -101,7 +101,17 @@ def play():
                         event_joueur2 = threading.Event()
                         thread_joueur2 = threading.Thread(target=joueur2.get_bombe().explose, args=(niveau,event_joueur2))
                         thread_joueur2.start()
+                        
                         #bombe2.explose(niveau)
+        if(ia1.joueur.vivant):
+            event_ia1 = threading.Event()
+            thread_ia1 = threading.Thread(target=ia1.move(niveau,event_ia1), args=(niveau,event_ia1))
+            thread_ia1.start()
+        if(ia2.joueur.vivant):
+            event_ia2 = threading.Event()
+            thread_ia2 = threading.Thread(target=ia2.move(niveau,event_ia2), args=(niveau,event_ia2))
+            thread_ia2.start()
+
         pygame.display.update()
 
 
