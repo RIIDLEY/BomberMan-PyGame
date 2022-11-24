@@ -105,12 +105,9 @@ def play():
                         #bombe2.explose(niveau)
         if(ia1.joueur.vivant):
             event_ia1 = threading.Event()
-            thread_ia1 = threading.Thread(target=ia1.move(niveau,event_ia1), args=(niveau,event_ia1))
+            thread_ia1 = threading.Thread(target=ia1.path_cible(niveau,joueur1,event_ia1), args=(niveau,event_ia1))
             thread_ia1.start()
-        if(ia2.joueur.vivant):
-            event_ia2 = threading.Event()
-            thread_ia2 = threading.Thread(target=ia2.move(niveau,event_ia2), args=(niveau,event_ia2))
-            thread_ia2.start()
+
 
         pygame.display.update()
 

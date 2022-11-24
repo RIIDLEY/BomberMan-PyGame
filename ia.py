@@ -41,3 +41,33 @@ class ia:
                 self.last_move = "gauche"
 
         self.possible = {"bas": False, "haut": False, "gauche": False, "droite": False}
+
+    def path_cible(self, niveau, cible, event):
+        event.wait(0.05)
+        self.scan_map(niveau)
+        if self.joueur.ligne < cible.ligne:
+            if self.possible["bas"] == True:
+                self.joueur.move_down(niveau)
+                self.last_move = "bas"
+            else:
+                self.move(niveau, event)
+        elif self.joueur.ligne > cible.ligne:
+            if self.possible["haut"] == True:
+                self.joueur.move_up(niveau)
+                self.last_move = "haut"
+            else:
+                self.move(niveau, event)
+        elif self.joueur.colonne < cible.colonne:
+            if self.possible["droite"] == True:
+                self.joueur.move_right(niveau)
+                self.last_move = "droite"
+            else:
+                self.move(niveau, event)
+        elif self.joueur.colonne > cible.colonne:
+            if self.possible["gauche"] == True:
+                self.joueur.move_left(niveau)
+                self.last_move = "gauche"
+            else:
+                self.move(niveau, event)
+
+        self.possible = {"bas": False, "haut": False, "gauche": False, "droite": False}
