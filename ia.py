@@ -1,115 +1,90 @@
 import random as rand
+from collections import deque, defaultdict
 
 class ia:
 
     def __init__(self, joueur):
         self.joueur = joueur
-        self.possible = {"bas": False, "haut": False, "gauche": False, "droite": False}
         self.chemin_movement = []
         self.cible = None
-        self.last_move = ""
-        self.possible_bombe = False
 
     def set_cible(self, cible):
         self.cible = cible
 
-    def scan_map(self, niveau):
-        if niveau.structure[self.joueur.ligne + 1][self.joueur.colonne] == 0 or niveau.structure[self.joueur.ligne + 1][self.joueur.colonne] == 8 or niveau.structure[self.joueur.ligne + 1][self.joueur.colonne] == 9:
-            self.possible["bas"] = True
-        if niveau.structure[self.joueur.ligne - 1][self.joueur.colonne] == 0 or niveau.structure[self.joueur.ligne - 1][self.joueur.colonne] == 8 or niveau.structure[self.joueur.ligne - 1][self.joueur.colonne] == 9:
-            self.possible["haut"] = True
-        if niveau.structure[self.joueur.ligne][self.joueur.colonne + 1] == 0 or niveau.structure[self.joueur.ligne][self.joueur.colonne + 1] == 8 or niveau.structure[self.joueur.ligne][self.joueur.colonne + 1] == 9:
-            self.possible["droite"] = True
-        if niveau.structure[self.joueur.ligne][self.joueur.colonne - 1] == 0 or niveau.structure[self.joueur.ligne][self.joueur.colonne - 1] == 8 or niveau.structure[self.joueur.ligne][self.joueur.colonne - 1] == 9:
-            self.possible["gauche"] = True
+    def find_shortest_paths_to_cible(self,niveau):
+        # On récupère les coordonnées de la cible
+        cible_pos = self.cible.get_pos()
+        # On récupère les coordonnées du joueur
+        joueur_pos = self.joueur.get_pos()
+        # On récupère le niveau
+        grille = niveau.get_grille()
+        # On récupère la taille du niveau
+        taille = niveau.get_taille()
 
-    def scan_map_bombe(self, niveau):
-        if niveau.structure[self.joueur.ligne + 1][self.joueur.colonne] == 2:
-            self.possible_bombe = True
-        if niveau.structure[self.joueur.ligne - 1][self.joueur.colonne] == 2:
-            self.possible_bombe = True
-        if niveau.structure[self.joueur.ligne][self.joueur.colonne + 1] == 2:
-            self.possible_bombe = True
-        if niveau.structure[self.joueur.ligne][self.joueur.colonne - 1] == 2:
-            self.possible_bombe = True
+        # On initialise le dictionnaire des chemins
+        chemins = defaultdict(list)
+        # On initialise la file des noeuds à visiter
+        queue = deque([cible_pos])
+        # On initialise la liste des noeuds visités
+        visited = []
 
+        # On ajoute le noeud de départ dans la liste des chemins
+        chemins[cible_pos] = [cible_pos]
 
-    def move(self, niveau, event):
-        event.wait(0.05)
-        self.scan_map(niveau)
-        tmpKey, tmpVal = rand.choice(list(self.possible.items()))
+        # Tant que la file n'est pas vide
+        while queue:
+            # On récupère le noeud en tête de file
+            noeud = queue.popleft()
+            print(noeud)
 
-        while tmpVal == False and self.last_move != tmpKey:
-            tmpKey, tmpVal = rand.choice(list(self.possible.items()))
+            # Si le noeud n'a pas déjà été visité
+            if noeud not in visited:
+                # On récupère les voisins du noeud
+                voisins = self.get_voisins(noeud, taille, niveau)
+                print(voisins)
+                # Pour chaque voisin
+                for voisin in voisins:
+                    # Si le voisin n'est pas un mur
+                    if grille[voisin[0]][voisin[1]] != 1:
+                        # On ajoute le voisin à la file des noeuds à visiter
+                        queue.append(voisin)
+                        # On ajoute le voisin au dictionnaire des chemins
+                        chemins[voisin] = chemins[noeud] + [voisin]
+                        # Si le voisin est le joueur
+                        if voisin == joueur_pos:
+                            # On sort de la boucle
+                            break
+                # On ajoute le noeud à la liste des noeuds visités
+                visited.append(noeud)
 
-        if tmpVal == True:
-            if tmpKey == "bas":
-                self.joueur.move_down(niveau)
-                self.last_move = "bas"
-            elif tmpKey == "haut":
-                self.joueur.move_up(niveau)
-                self.last_move = "haut"
-            elif tmpKey == "droite":
-                self.joueur.move_right(niveau)
-                self.last_move = "droite"
-            elif tmpKey == "gauche":
-                self.joueur.move_left(niveau)
-                self.last_move = "gauche"
+        # On retourne le dictionnaire des chemins
+        print("Position du joueur")
+        print(joueur_pos)
+        print("Position de la cible")
+        print(cible_pos)
+        print("Chemin")
+        print(list(chemins))
+        return chemins
 
-        self.possible = {"bas": False, "haut": False, "gauche": False, "droite": False}
+    def get_voisins(self, noeud, taille, niveau):
+        # On initialise la liste des voisins
+        voisins = []
+        # On récupère les coordonnées du noeud
+        x, y = noeud
 
-    def move_to_cible(self, niveau, event):
-        event.wait(0.05)
-        self.scan_map(niveau)
-        if self.cible != None:
-            if self.joueur.ligne < self.cible.ligne and  niveau.structure[self.joueur.ligne + 1][self.joueur.colonne] == 0 or niveau.structure[self.joueur.ligne + 1][self.joueur.colonne] == 8 or niveau.structure[self.joueur.ligne + 1][self.joueur.colonne] == 9:
-                self.joueur.move_down(niveau)
-                self.last_move = "bas"
-            elif self.joueur.ligne > self.cible.ligne and niveau.structure[self.joueur.ligne - 1][self.joueur.colonne] == 0 or niveau.structure[self.joueur.ligne - 1][self.joueur.colonne] == 8 or niveau.structure[self.joueur.ligne - 1][self.joueur.colonne] == 9:
-                self.joueur.move_up(niveau)
-                self.last_move = "haut"
-            elif self.joueur.colonne < self.cible.colonne and niveau.structure[self.joueur.ligne][self.joueur.colonne + 1] == 0 or niveau.structure[self.joueur.ligne][self.joueur.colonne + 1] == 8 or niveau.structure[self.joueur.ligne][self.joueur.colonne + 1] == 9:
-                self.joueur.move_right(niveau)
-                self.last_move = "droite"
-            elif self.joueur.colonne > self.cible.colonne and niveau.structure[self.joueur.ligne][self.joueur.colonne - 1] == 0 or niveau.structure[self.joueur.ligne][self.joueur.colonne - 1] == 8 or niveau.structure[self.joueur.ligne][self.joueur.colonne - 1] == 9:
-                self.joueur.move_left(niveau)
-                self.last_move = "gauche"
-            self.place_bombe(niveau)
-        self.possible = {"bas": False, "haut": False, "gauche": False, "droite": False}
+        # On ajoute les voisins du haut
+        if y > 0 and niveau.get_grille()[x][y-1] != 1:
+            voisins.append((x, y - 1))
+        # On ajoute les voisins du bas
+        if y < taille - 1 and niveau.get_grille()[x][y+1] != 1:
+            voisins.append((x, y + 1))
+        # On ajoute les voisins de gauche
+        if x > 0 and niveau.get_grille()[x-1][y] != 1:
+            voisins.append((x - 1, y))
+        # On ajoute les voisins de droite
+        if x < taille - 1 and niveau.get_grille()[x+1][y] != 1:
+            voisins.append((x + 1, y))
 
-    def place_bombe(self, niveau):
-        self.scan_map_bombe(niveau)
-        if self.possible_bombe == True:
-            self.joueur.get_bombe().set_bombe(self.joueur, niveau)
-            self.possible_bombe = False
-    
-    
-    # def path_cible(self, niveau, cible, event):
-    #     event.wait(0.05)
-    #     self.scan_map(niveau)
-    #     if self.joueur.ligne < cible.ligne:
-    #         if self.possible["bas"] == True:
-    #             self.joueur.move_down(niveau)
-    #             self.last_move = "bas"
-    #         else:
-    #             self.move(niveau, event)
-    #     elif self.joueur.ligne > cible.ligne:
-    #         if self.possible["haut"] == True:
-    #             self.joueur.move_up(niveau)
-    #             self.last_move = "haut"
-    #         else:
-    #             self.move(niveau, event)
-    #     elif self.joueur.colonne < cible.colonne:
-    #         if self.possible["droite"] == True:
-    #             self.joueur.move_right(niveau)
-    #             self.last_move = "droite"
-    #         else:
-    #             self.move(niveau, event)
-    #     elif self.joueur.colonne > cible.colonne:
-    #         if self.possible["gauche"] == True:
-    #             self.joueur.move_left(niveau)
-    #             self.last_move = "gauche"
-    #         else:
-    #             self.move(niveau, event)
+        # On retourne la liste des voisins
+        return voisins
 
-    #     self.possible = {"bas": False, "haut": False, "gauche": False, "droite": False}

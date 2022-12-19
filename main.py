@@ -32,16 +32,17 @@ def play():
         joueur4 = joueur(image_joueur4)
 
         ia1 = ia(joueur3)
-        ia1.set_cible(joueur1)
+        ia1.set_cible(joueur2)
 
-        ia2 = ia(joueur4)
+        #ia2 = ia(joueur4)
 
         niveau.add_joueur(joueur1)
         niveau.add_joueur(joueur2)
         niveau.add_joueur(joueur3)
-        niveau.add_joueur(joueur4)
+        #niveau.add_joueur(joueur4)
 
         niveau.updateLvl()
+        ia1.find_shortest_paths_to_cible(niveau)
 
     while True:
         #PLAY_MOUSE_POS = pygame.mouse.get_pos()
@@ -105,10 +106,10 @@ def play():
                         thread_joueur2.start()
                         
                         #bombe2.explose(niveau)
-        if(ia1.joueur.vivant):
-            event_ia1 = threading.Event()
-            thread_ia1 = threading.Thread(target=ia1.move_to_cible(niveau,event_ia1), args=(niveau,event_ia1))
-            thread_ia1.start()
+        # if(ia1.joueur.vivant):
+        #     event_ia1 = threading.Event()
+        #     thread_ia1 = threading.Thread(target=ia1.move(niveau,event_ia1), args=(niveau,event_ia1))
+        #     thread_ia1.start()
 
 
         pygame.display.update()

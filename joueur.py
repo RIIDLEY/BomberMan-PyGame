@@ -14,6 +14,7 @@ class joueur:
         self.speed = 1
         self.ligne = 0
         self.colonne = 0
+        self.position = [2, 0]
         self.last_ligne = 0
         self.last_colonne = 0
         self.vivant = True
@@ -37,6 +38,7 @@ class joueur:
             self.last_ligne = self.ligne
             self.ligne -= 1
             niveau.structure[self.ligne][self.colonne] = self.id
+            self.position = [self.ligne, self.colonne]
             niveau.updateLvl()
             #print("Move up YES")
 
@@ -47,6 +49,7 @@ class joueur:
             self.last_ligne = self.ligne
             self.ligne += 1
             niveau.structure[self.ligne][self.colonne] = self.id
+            self.position = [self.ligne, self.colonne]
             niveau.updateLvl()
             #print("Move down YES")
 
@@ -57,6 +60,7 @@ class joueur:
             self.last_ligne = self.ligne
             self.colonne -= 1
             niveau.structure[self.ligne][self.colonne] = self.id
+            self.position = [self.ligne, self.colonne]
             niveau.updateLvl()
             #print("Move left YES")
 
@@ -68,6 +72,7 @@ class joueur:
             self.last_ligne = self.ligne
             self.colonne += 1
             niveau.structure[self.ligne][self.colonne] = self.id
+            self.position = [self.ligne, self.colonne]
             niveau.updateLvl()
             #print("Move right YES")
 
