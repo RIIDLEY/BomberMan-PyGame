@@ -20,7 +20,7 @@ class joueur:
         self.vivant = True
         self.sprit = sprite
         self.bombe = bombe()
-        print("Init Joueur")
+        #print("Init Joueur")
 
     def get_pos(self):
         return self.ligne, self.colonne

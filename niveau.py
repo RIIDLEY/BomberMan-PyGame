@@ -18,16 +18,17 @@ class Niveau:
         self.arrayBombes = {}
         self.screen = pygame.display.set_mode((520, 520))
         self.structure = grid
-        print("Init Niveau")
+        #print("Init Niveau")
 
     def generer(self):
-        print("Genere Niveau")
+        #print("Genere Niveau")
         #random.seed(calendar.timegm(time.gmtime()))
         for y, line in enumerate(self.structure):
             for x, c in enumerate(line):
                 if (c==0):#Sol
                     if(randrange(0, 100) < 70):
-                        print("box")
+                        a=1
+                        #print("box")
                         #self.screen.blit(image_box, (x*self.x, y*self.y))
                         #self.structure[y][x] = 2
                     else:
@@ -37,7 +38,7 @@ class Niveau:
                 if (c==1):#Murs
                     self.screen.blit(image_brick, (x * self.x, y * self.y))
         self.init = True
-        print("Fin génération")
+        #print("Fin génération")
 
     def set_pos_joueur(self, ligne, colonne, joueur):
         self.structure[ligne][colonne] = joueur.id

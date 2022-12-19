@@ -15,7 +15,7 @@ class bombe:
         self.ligne = 0
         self.colonne = 0
         self.planted = False
-        print("Init bombe")
+        #print("Init bombe")
 
     def set_bombe(self, joueur, niveau):
         if (self.planted == False):
@@ -37,7 +37,7 @@ class bombe:
     def explose(self, niveau, event):
         if (self.planted == True):
             event.wait(1)
-            print("Explosion")
+            #print("Explosion")
             #playsound('sounds\explosion.mp3')
             self.planted = False
             self.sprit = image_explosion

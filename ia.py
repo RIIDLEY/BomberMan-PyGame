@@ -1,5 +1,6 @@
 import random as rand
 from collections import deque, defaultdict
+import math 
 
 class ia:
 
@@ -15,7 +16,8 @@ class ia:
         # On récupère les coordonnées de la cible
         cible_pos = self.cible.get_pos()
         # On récupère les coordonnées du joueur
-        joueur_pos = self.joueur.get_pos()
+        joueurIA_pos = self.joueur.get_pos()
+
         # On récupère le niveau
         grille = niveau.get_grille()
         # On récupère la taille du niveau
@@ -28,6 +30,11 @@ class ia:
         # On initialise la liste des noeuds visités
         visited = []
 
+        path = []
+
+        # On initialise le noeud temporaire pour stocker le meilleur noeud pour atteindre le joueur
+        node_tmp = None
+
         # On ajoute le noeud de départ dans la liste des chemins
         chemins[cible_pos] = [cible_pos]
 
@@ -35,36 +42,40 @@ class ia:
         while queue:
             # On récupère le noeud en tête de file
             noeud = queue.popleft()
-            print(noeud)
 
             # Si le noeud n'a pas déjà été visité
             if noeud not in visited:
                 # On récupère les voisins du noeud
                 voisins = self.get_voisins(noeud, taille, niveau)
-                print(voisins)
+                node_tmp = voisins[0]
                 # Pour chaque voisin
                 for voisin in voisins:
                     # Si le voisin n'est pas un mur
-                    if grille[voisin[0]][voisin[1]] != 1:
-                        # On ajoute le voisin à la file des noeuds à visiter
-                        queue.append(voisin)
+
+                    if grille[voisin[0]][voisin[1]] != 1 and (self.manhattan(voisin, joueurIA_pos) <= self.manhattan(node_tmp, joueurIA_pos)):
+                        node_tmp = voisin
                         # On ajoute le voisin au dictionnaire des chemins
-                        chemins[voisin] = chemins[noeud] + [voisin]
+                        #chemins[voisin] = chemins[noeud] + [voisin]
                         # Si le voisin est le joueur
-                        if voisin == joueur_pos:
+                        if voisin == joueurIA_pos:
                             # On sort de la boucle
+                            print("Chemin trouvé")
                             break
                 # On ajoute le noeud à la liste des noeuds visités
+                queue.append(node_tmp)
+                path.append(node_tmp)
+                node_tmp = None
+
                 visited.append(noeud)
 
         # On retourne le dictionnaire des chemins
-        print("Position du joueur")
-        print(joueur_pos)
-        print("Position de la cible")
-        print(cible_pos)
+        #print("Position du joueur")
+        #print(joueur_pos)
+        #print("Position de la cible")
+        #print(cible_pos)
         print("Chemin")
-        print(list(chemins))
-        return chemins
+        print(path)
+        return path
 
     def get_voisins(self, noeud, taille, niveau):
         # On initialise la liste des voisins
@@ -88,3 +99,5 @@ class ia:
         # On retourne la liste des voisins
         return voisins
 
+    def manhattan(self, nodeCourant, positionBot):
+        return math.sqrt((nodeCourant[0] - positionBot[0])**2 + (nodeCourant[1] - positionBot[1])**2)
