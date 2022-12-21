@@ -26,7 +26,8 @@ class ia:
         # On initialise le dictionnaire des chemins
         chemins = defaultdict(list)
         # On initialise la file des noeuds à visiter
-        queue = deque([cible_pos])
+        queue = deque([joueurIA_pos])
+        print(queue)
         # On initialise la liste des noeuds visités
         visited = []
 
@@ -52,12 +53,12 @@ class ia:
                 for voisin in voisins:
                     # Si le voisin n'est pas un mur
 
-                    if grille[voisin[0]][voisin[1]] != 1 and (self.manhattan(voisin, joueurIA_pos) <= self.manhattan(node_tmp, joueurIA_pos)):
+                    if grille[voisin[0]][voisin[1]] != 1 and (self.manhattan(voisin, cible_pos, niveau) <= self.manhattan(node_tmp, cible_pos, niveau)):
                         node_tmp = voisin
                         # On ajoute le voisin au dictionnaire des chemins
                         #chemins[voisin] = chemins[noeud] + [voisin]
                         # Si le voisin est le joueur
-                        if voisin == joueurIA_pos:
+                        if voisin == cible_pos:
                             # On sort de la boucle
                             print("Chemin trouvé")
                             break
@@ -74,6 +75,8 @@ class ia:
         #print("Position de la cible")
         #print(cible_pos)
         print("Chemin")
+        path.pop(len(path)-1)
+        path.pop(len(path)-1)
         print(path)
         return path
 
@@ -99,5 +102,8 @@ class ia:
         # On retourne la liste des voisins
         return voisins
 
-    def manhattan(self, nodeCourant, positionBot):
-        return math.sqrt((nodeCourant[0] - positionBot[0])**2 + (nodeCourant[1] - positionBot[1])**2)
+    def manhattan(self, nodeCourant, positionBot , niveau):
+        if(niveau.get_grille()[nodeCourant[0]][nodeCourant[1]] == 2):
+            return math.sqrt((nodeCourant[0] - positionBot[0])**2 + (nodeCourant[1] - positionBot[1])**2) + 1
+        else:
+            return math.sqrt((nodeCourant[0] - positionBot[0])**2 + (nodeCourant[1] - positionBot[1])**2)

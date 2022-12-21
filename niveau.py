@@ -26,11 +26,11 @@ class Niveau:
         for y, line in enumerate(self.structure):
             for x, c in enumerate(line):
                 if (c==0):#Sol
-                    if(randrange(0, 100) < 70):
+                    if(randrange(0, 100) < 60):
                         a=1
                         #print("box")
-                        #self.screen.blit(image_box, (x*self.x, y*self.y))
-                        #self.structure[y][x] = 2
+                        self.screen.blit(image_box, (x*self.x, y*self.y))
+                        self.structure[y][x] = 2
                     else:
                         self.screen.blit(image_sol, (x * self.x, y * self.y))
                 if(c==9 or c==8):#Mur
