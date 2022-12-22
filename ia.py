@@ -1,18 +1,22 @@
 import random as rand
 from collections import deque, defaultdict
-import math 
+import math
+import threading
+
+
 
 class ia:
 
     def __init__(self, joueur):
         self.joueur = joueur
-        self.chemin_movement = []
+        self.possible = {"bas": False, "haut": False, "gauche": False, "droite": False}
+        self.direction = ""
         self.cible = None
 
     def set_cible(self, cible):
         self.cible = cible
 
-    def dijkstra_chemin(self,niveau):
+    def dijkstra_chemin(self, niveau):
         # On récupère les coordonnées de la cible
         cible_pos = self.cible.get_pos()
         # On récupère les coordonnées du joueur
@@ -26,7 +30,8 @@ class ia:
         # On initialise le dictionnaire des chemins
         chemins = defaultdict(list)
         # On initialise la file des noeuds à visiter
-        queue = deque([joueurIA_pos])        # On initialise la liste des noeuds visités
+        # On initialise la liste des noeuds visités
+        queue = deque([joueurIA_pos])
         visited = []
 
         path = []
@@ -69,9 +74,8 @@ class ia:
         path.pop(len(path)-1)
         print(path)
         return path
-        
 
-    def dijkstra_move(self,niveau):
+    def dijkstra_move(self, niveau):
         # On récupère les coordonnées de la cible
         cible_pos = self.cible.get_pos()
         # On récupère les coordonnées du joueur
@@ -84,8 +88,6 @@ class ia:
 
         # On initialise le dictionnaire des chemins
         chemins = defaultdict(list)
-        # On initialise la file des noeuds à visiter
-        # On initialise la liste des noeuds visités
 
         # On initialise le noeud temporaire pour stocker le meilleur noeud pour atteindre le joueur
         node_tmp = None
@@ -100,25 +102,36 @@ class ia:
         for voisin in voisins:
             if grille[voisin[0]][voisin[1]] != 1 and (self.manhattan(voisin, cible_pos, niveau) <= self.manhattan(node_tmp, cible_pos, niveau)):
                 node_tmp = voisin
-        print(node_tmp)
-        print(joueurIA_pos)
-        #se deplace vers le noeud le plus proche de la cible
+        # print(node_tmp)
+        # print(joueurIA_pos)
+
+        # se deplace vers le noeud le plus proche de la cible
         if node_tmp[1] > joueurIA_pos[1] and node_tmp[0] == joueurIA_pos[0]:
-            print('droite')
+            # print('droite')
+            self.direction = "droite"
             self.joueur.move_right(niveau)
         elif node_tmp[1] < joueurIA_pos[1] and node_tmp[0] == joueurIA_pos[0]:
-            print('gauche')
+            # print('gauche')
+            self.direction = "gauche"
             self.joueur.move_left(niveau)
         elif node_tmp[1] == joueurIA_pos[1] and node_tmp[0] > joueurIA_pos[0]:
-            print('bas')
+            # print('bas')
+            self.direction = "bas"
             self.joueur.move_down(niveau)
         elif node_tmp[1] == joueurIA_pos[1] and node_tmp[0] < joueurIA_pos[0]:
-            print('haut')
+            # print('haut')
+            self.direction = "haut"
             self.joueur.move_up(niveau)
-        
+       
+        if (grille[node_tmp[0]][node_tmp[1]] == 2):
+            self.joueur.get_bombe().set_bombe(self.joueur,niveau)
+            event_IA = threading.Event()
+            thread_IA = threading.Thread(target=self.joueur.get_bombe().explose, args=(niveau,event_IA))
+            thread_IA.start()
+            self.go_to_safe_place(niveau)
+
+
         return node_tmp
-
-
 
     def get_voisins(self, noeud, taille, niveau):
         # On initialise la liste des voisins
@@ -142,8 +155,36 @@ class ia:
         # On retourne la liste des voisins
         return voisins
 
-    def manhattan(self, nodeCourant, positionBot , niveau):
-        if(niveau.get_grille()[nodeCourant[0]][nodeCourant[1]] == 2):
+    def manhattan(self, nodeCourant, positionBot, niveau):
+        if (niveau.get_grille()[nodeCourant[0]][nodeCourant[1]] == 2):
             return math.sqrt((nodeCourant[0] - positionBot[0])**2 + (nodeCourant[1] - positionBot[1])**2) + 1
         else:
             return math.sqrt((nodeCourant[0] - positionBot[0])**2 + (nodeCourant[1] - positionBot[1])**2)
+
+    def go_to_safe_place(self, niveau):
+        # fait une fonction qui permet de reculer de 2 cases si il y a une bombe
+        if niveau.structure[self.joueur.ligne + 1][self.joueur.colonne] == 0 or niveau.structure[self.joueur.ligne + 1][self.joueur.colonne] == 8 or niveau.structure[self.joueur.ligne + 1][self.joueur.colonne] == 9 and self.possible["bas"] == False:
+            self.possible["bas"] = True
+        if niveau.structure[self.joueur.ligne - 1][self.joueur.colonne] == 0 or niveau.structure[self.joueur.ligne - 1][self.joueur.colonne] == 8 or niveau.structure[self.joueur.ligne - 1][self.joueur.colonne] == 9 and self.possible["haut"] == False:
+            self.possible["haut"] = True
+        if niveau.structure[self.joueur.ligne][self.joueur.colonne + 1] == 0 or niveau.structure[self.joueur.ligne][self.joueur.colonne + 1] == 8 or niveau.structure[self.joueur.ligne][self.joueur.colonne + 1] == 9 and self.possible["droite"] == False:
+            self.possible["droite"] = True
+        if niveau.structure[self.joueur.ligne][self.joueur.colonne - 1] == 0 or niveau.structure[self.joueur.ligne][self.joueur.colonne - 1] == 8 or niveau.structure[self.joueur.ligne][self.joueur.colonne - 1] == 9 and self.possible["gauche"] == False:
+            self.possible["gauche"] = True
+        
+        tmpKey, tmpVal = rand.choice(list(self.possible.items()))
+
+        while tmpVal == False:
+            tmpKey, tmpVal = rand.choice(list(self.possible.items()))
+
+        if tmpVal == True:
+            if tmpKey == "bas":
+                self.joueur.move_down(niveau)
+            elif tmpKey == "haut":
+                self.joueur.move_up(niveau)
+            elif tmpKey == "droite":
+                self.joueur.move_right(niveau)
+            elif tmpKey == "gauche":
+                self.joueur.move_left(niveau)
+
+        self.possible = {"bas": False, "haut": False, "gauche": False, "droite": False}
