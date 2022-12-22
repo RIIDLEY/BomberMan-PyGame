@@ -26,7 +26,7 @@ class Niveau:
         for y, line in enumerate(self.structure):
             for x, c in enumerate(line):
                 if (c==0):#Sol
-                    if(randrange(0, 100) < 60):
+                    if(randrange(0, 100) < 20):
                         a=1
                         #print("box")
                         self.screen.blit(image_box, (x*self.x, y*self.y))

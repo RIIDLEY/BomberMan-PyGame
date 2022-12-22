@@ -12,7 +12,7 @@ class ia:
     def set_cible(self, cible):
         self.cible = cible
 
-    def find_shortest_paths_to_cible(self,niveau):
+    def dijkstra_chemin(self,niveau):
         # On récupère les coordonnées de la cible
         cible_pos = self.cible.get_pos()
         # On récupère les coordonnées du joueur
@@ -26,9 +26,7 @@ class ia:
         # On initialise le dictionnaire des chemins
         chemins = defaultdict(list)
         # On initialise la file des noeuds à visiter
-        queue = deque([joueurIA_pos])
-        print(queue)
-        # On initialise la liste des noeuds visités
+        queue = deque([joueurIA_pos])        # On initialise la liste des noeuds visités
         visited = []
 
         path = []
@@ -51,16 +49,13 @@ class ia:
                 node_tmp = voisins[0]
                 # Pour chaque voisin
                 for voisin in voisins:
-                    # Si le voisin n'est pas un mur
-
+                    # Si le voisin n'est pas un mur et que le voisin est plus proche du joueur que le noeud temporaire
                     if grille[voisin[0]][voisin[1]] != 1 and (self.manhattan(voisin, cible_pos, niveau) <= self.manhattan(node_tmp, cible_pos, niveau)):
+                        # On met à jour le noeud temporaire
                         node_tmp = voisin
-                        # On ajoute le voisin au dictionnaire des chemins
-                        #chemins[voisin] = chemins[noeud] + [voisin]
                         # Si le voisin est le joueur
                         if voisin == cible_pos:
                             # On sort de la boucle
-                            print("Chemin trouvé")
                             break
                 # On ajoute le noeud à la liste des noeuds visités
                 queue.append(node_tmp)
@@ -69,16 +64,61 @@ class ia:
 
                 visited.append(noeud)
 
-        # On retourne le dictionnaire des chemins
-        #print("Position du joueur")
-        #print(joueur_pos)
-        #print("Position de la cible")
-        #print(cible_pos)
         print("Chemin")
         path.pop(len(path)-1)
         path.pop(len(path)-1)
         print(path)
         return path
+        
+
+    def dijkstra_move(self,niveau):
+        # On récupère les coordonnées de la cible
+        cible_pos = self.cible.get_pos()
+        # On récupère les coordonnées du joueur
+        joueurIA_pos = self.joueur.get_pos()
+
+        # On récupère le niveau
+        grille = niveau.get_grille()
+        # On récupère la taille du niveau
+        taille = niveau.get_taille()
+
+        # On initialise le dictionnaire des chemins
+        chemins = defaultdict(list)
+        # On initialise la file des noeuds à visiter
+        # On initialise la liste des noeuds visités
+
+        # On initialise le noeud temporaire pour stocker le meilleur noeud pour atteindre le joueur
+        node_tmp = None
+
+        # On ajoute le noeud de départ dans la liste des chemins
+        chemins[cible_pos] = [cible_pos]
+
+        # Tant que la file n'est pas vide
+
+        voisins = self.get_voisins(joueurIA_pos, taille, niveau)
+        node_tmp = voisins[0]
+        for voisin in voisins:
+            if grille[voisin[0]][voisin[1]] != 1 and (self.manhattan(voisin, cible_pos, niveau) <= self.manhattan(node_tmp, cible_pos, niveau)):
+                node_tmp = voisin
+        print(node_tmp)
+        print(joueurIA_pos)
+        #se deplace vers le noeud le plus proche de la cible
+        if node_tmp[1] > joueurIA_pos[1] and node_tmp[0] == joueurIA_pos[0]:
+            print('droite')
+            self.joueur.move_right(niveau)
+        elif node_tmp[1] < joueurIA_pos[1] and node_tmp[0] == joueurIA_pos[0]:
+            print('gauche')
+            self.joueur.move_left(niveau)
+        elif node_tmp[1] == joueurIA_pos[1] and node_tmp[0] > joueurIA_pos[0]:
+            print('bas')
+            self.joueur.move_down(niveau)
+        elif node_tmp[1] == joueurIA_pos[1] and node_tmp[0] < joueurIA_pos[0]:
+            print('haut')
+            self.joueur.move_up(niveau)
+        
+        return node_tmp
+
+
 
     def get_voisins(self, noeud, taille, niveau):
         # On initialise la liste des voisins

@@ -42,7 +42,7 @@ def play():
         #niveau.add_joueur(joueur4)
 
         niveau.updateLvl()
-        ia1.find_shortest_paths_to_cible(niveau)
+
 
     while True:
         #PLAY_MOUSE_POS = pygame.mouse.get_pos()
@@ -69,7 +69,9 @@ def play():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    main_menu()
+                    #main_menu()
+                    ia1.dijkstra_chemin(niveau)
+                    ia1.dijkstra_move(niveau)
                 # Joueur 1
                 if event.key == pygame.K_RIGHT and joueur1.vivant==True:
                     joueur1.move_right(niveau)
