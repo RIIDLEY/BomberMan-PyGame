@@ -61,6 +61,7 @@ class ia:
                         # Si le voisin est le joueur
                         if voisin == cible_pos:
                             # On sort de la boucle
+                            print("Chemin trouve")
                             break
                 # On ajoute le noeud à la liste des noeuds visités
                 queue.append(node_tmp)
@@ -75,8 +76,9 @@ class ia:
         print(path)
         return path
 
-    def dijkstra_move(self, niveau):
+    def dijkstra_move(self, niveau,event):
         # On récupère les coordonnées de la cible
+        event.wait(5)
         cible_pos = self.cible.get_pos()
         # On récupère les coordonnées du joueur
         joueurIA_pos = self.joueur.get_pos()
@@ -129,6 +131,7 @@ class ia:
             thread_IA = threading.Thread(target=self.joueur.get_bombe().explose, args=(niveau,event_IA))
             thread_IA.start()
             self.go_to_safe_place(niveau)
+            event.wait(1)
 
 
         return node_tmp
@@ -157,7 +160,7 @@ class ia:
 
     def manhattan(self, nodeCourant, positionBot, niveau):
         if (niveau.get_grille()[nodeCourant[0]][nodeCourant[1]] == 2):
-            return math.sqrt((nodeCourant[0] - positionBot[0])**2 + (nodeCourant[1] - positionBot[1])**2) + 1
+            return math.sqrt((nodeCourant[0] - positionBot[0])**2 + (nodeCourant[1] - positionBot[1])**2)
         else:
             return math.sqrt((nodeCourant[0] - positionBot[0])**2 + (nodeCourant[1] - positionBot[1])**2)
 

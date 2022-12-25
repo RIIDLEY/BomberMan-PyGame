@@ -58,7 +58,10 @@ def play():
         # PLAY_BACK.changeColor(PLAY_MOUSE_POS)
         # PLAY_BACK.update(SCREEN)
 
-
+        if(ia1.joueur.vivant):
+             event_ia1 = threading.Event()
+             thread_ia1 = threading.Thread(target=ia1.dijkstra_move, args=(niveau,event_ia1))
+             thread_ia1.start()
 
         if(niveau.partie_end()):
             game_over()
@@ -108,11 +111,6 @@ def play():
                         thread_joueur2.start()
                         
                         #bombe2.explose(niveau)
-        # if(ia1.joueur.vivant):
-        #     event_ia1 = threading.Event()
-        #     thread_ia1 = threading.Thread(target=ia1.move(niveau,event_ia1), args=(niveau,event_ia1))
-        #     thread_ia1.start()
-
 
         pygame.display.update()
 
