@@ -6,11 +6,14 @@ import threading
 
 class ia:
 
-    def __init__(self, joueur):
+    def __init__(self, joueur, niveau):
         self.joueur = joueur
         self.possible = {"bas": False, "haut": False,
             "gauche": False, "droite": False}
         self.direction = ""
+        self.liste_cible = niveau.arrayJoueur.copy()
+        self.liste_cible.pop(joueur.id)
+        print(self.liste_cible)
         self.cible = None
 
     def set_cible(self, cible):
@@ -106,27 +109,7 @@ class ia:
                 node_tmp = voisin
         # print(node_tmp)
         # print(joueurIA_pos)
-
-            
-        # se deplace vers le noeud le plus proche de la cible
-        if node_tmp[1] > joueurIA_pos[1] and node_tmp[0] == joueurIA_pos[0]:
-            print('droite')
-            self.direction = "droite"
-            self.joueur.move_right(niveau)
-        elif node_tmp[1] < joueurIA_pos[1] and node_tmp[0] == joueurIA_pos[0]:
-            print('gauche')
-            self.direction = "gauche"
-            self.joueur.move_left(niveau)
-        elif node_tmp[1] == joueurIA_pos[1] and node_tmp[0] > joueurIA_pos[0]:
-            print('bas')
-            self.direction = "bas"
-            self.joueur.move_down(niveau)
-        elif node_tmp[1] == joueurIA_pos[1] and node_tmp[0] < joueurIA_pos[0]:
-            print('haut')
-            self.direction = "haut"
-            self.joueur.move_up(niveau)
-
-        if (grille[node_tmp[0]][node_tmp[1]] == 2):
+        if (grille[node_tmp[0]][node_tmp[1]] == 2 or (grille[node_tmp[0]][node_tmp[1]] > 10 and grille[node_tmp[0]][node_tmp[1]] < 20)):
             print("Bombe")
             self.joueur.get_bombe().set_bombe(self.joueur,niveau)
             event_IA = threading.Event()
@@ -134,7 +117,24 @@ class ia:
             thread_IA.start()
             event.wait(0.5)
             self.go_to_safe_place(niveau)
-
+        else:
+            # se deplace vers le noeud le plus proche de la cible
+            if node_tmp[1] > joueurIA_pos[1] and node_tmp[0] == joueurIA_pos[0]:
+                print('droite')
+                self.direction = "droite"
+                self.joueur.move_right(niveau)
+            elif node_tmp[1] < joueurIA_pos[1] and node_tmp[0] == joueurIA_pos[0]:
+                print('gauche')
+                self.direction = "gauche"
+                self.joueur.move_left(niveau)
+            elif node_tmp[1] == joueurIA_pos[1] and node_tmp[0] > joueurIA_pos[0]:
+                print('bas')
+                self.direction = "bas"
+                self.joueur.move_down(niveau)
+            elif node_tmp[1] == joueurIA_pos[1] and node_tmp[0] < joueurIA_pos[0]:
+                print('haut')
+                self.direction = "haut"
+                self.joueur.move_up(niveau)
 
         return node_tmp
 

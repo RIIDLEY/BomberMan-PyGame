@@ -31,8 +31,6 @@ def play():
         joueur3 = joueur(image_joueur3)
         joueur4 = joueur(image_joueur4)
 
-        ia1 = ia(joueur3)
-        ia1.set_cible(joueur2)
 
         #ia2 = ia(joueur4)
 
@@ -41,6 +39,10 @@ def play():
         niveau.add_joueur(joueur3)
         #niveau.add_joueur(joueur4)
 
+
+        ia1 = ia(joueur3, niveau)
+        ia1.set_cible(joueur2)
+        
         niveau.updateLvl()
         
         if(ia1.joueur.vivant ):
