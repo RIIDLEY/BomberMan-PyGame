@@ -11,12 +11,12 @@ class Niveau:
 
     def __init__(self):
         """initialisation des variables de la class"""
-        self.x = 40
-        self.y = 40
+        self.x = 60
+        self.y = 60
         self.init = False
         self.arrayJoueur = {}
         self.arrayBombes = {}
-        self.screen = pygame.display.set_mode((520, 520))
+        self.screen = pygame.display.set_mode((1260, 720))
         self.structure = grid
         #print("Init Niveau")
 

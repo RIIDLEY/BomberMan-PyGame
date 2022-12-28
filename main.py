@@ -18,7 +18,6 @@ BG = pygame.image.load("assets/Background.png")
 def get_font(size):  # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/font.ttf", size)
 
-
 def play():
     SCREEN.fill("black")
     niveau = Niveau()
@@ -42,7 +41,7 @@ def play():
             thread_ia1 = threading.Thread(
                 target=ia1.dijkstra_move, args=(niveau, event_ia1))
             thread_ia1.start()
-    game_over()
+
     while True:
 
         if (ia1.joueur.vivant and thread_ia1.is_alive() == False):
@@ -130,7 +129,6 @@ def options():
 
         pygame.display.update()
 
-
 def main_menu():
     while True:
         SCREEN.blit(BG, (0, 0))
@@ -171,9 +169,8 @@ def main_menu():
 
 def game_over():
     while True:
-        SCREEN.fill("White")
         GAME_OVER_MOUSE_POS = pygame.mouse.get_pos()
-        SCREEN = pygame.display.set_mode((1280, 720))
+        SCREEN.fill("White")
 
         GAME_OVER_TEXT = get_font(45).render(
             "GAME OVER", True, "Black")
