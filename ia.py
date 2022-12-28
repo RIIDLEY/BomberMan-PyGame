@@ -4,12 +4,12 @@ import math
 import threading
 
 
-
 class ia:
 
     def __init__(self, joueur):
         self.joueur = joueur
-        self.possible = {"bas": False, "haut": False, "gauche": False, "droite": False}
+        self.possible = {"bas": False, "haut": False,
+            "gauche": False, "droite": False}
         self.direction = ""
         self.cible = None
 
@@ -76,9 +76,9 @@ class ia:
         print(path)
         return path
 
-    def dijkstra_move(self, niveau,event):
+    def dijkstra_move(self, niveau, event):
         # On récupère les coordonnées de la cible
-        event.wait(5)
+        event.wait(2)
         cible_pos = self.cible.get_pos()
         # On récupère les coordonnées du joueur
         joueurIA_pos = self.joueur.get_pos()
@@ -107,31 +107,33 @@ class ia:
         # print(node_tmp)
         # print(joueurIA_pos)
 
+            
         # se deplace vers le noeud le plus proche de la cible
         if node_tmp[1] > joueurIA_pos[1] and node_tmp[0] == joueurIA_pos[0]:
-            # print('droite')
+            print('droite')
             self.direction = "droite"
             self.joueur.move_right(niveau)
         elif node_tmp[1] < joueurIA_pos[1] and node_tmp[0] == joueurIA_pos[0]:
-            # print('gauche')
+            print('gauche')
             self.direction = "gauche"
             self.joueur.move_left(niveau)
         elif node_tmp[1] == joueurIA_pos[1] and node_tmp[0] > joueurIA_pos[0]:
-            # print('bas')
+            print('bas')
             self.direction = "bas"
             self.joueur.move_down(niveau)
         elif node_tmp[1] == joueurIA_pos[1] and node_tmp[0] < joueurIA_pos[0]:
-            # print('haut')
+            print('haut')
             self.direction = "haut"
             self.joueur.move_up(niveau)
-       
+
         if (grille[node_tmp[0]][node_tmp[1]] == 2):
+            print("Bombe")
             self.joueur.get_bombe().set_bombe(self.joueur,niveau)
             event_IA = threading.Event()
             thread_IA = threading.Thread(target=self.joueur.get_bombe().explose, args=(niveau,event_IA))
             thread_IA.start()
+            event.wait(0.5)
             self.go_to_safe_place(niveau)
-            event.wait(1)
 
 
         return node_tmp
@@ -160,7 +162,7 @@ class ia:
 
     def manhattan(self, nodeCourant, positionBot, niveau):
         if (niveau.get_grille()[nodeCourant[0]][nodeCourant[1]] == 2):
-            return math.sqrt((nodeCourant[0] - positionBot[0])**2 + (nodeCourant[1] - positionBot[1])**2)
+            return math.sqrt((nodeCourant[0] - positionBot[0])**2 + (nodeCourant[1] - positionBot[1])**2) + 0.5
         else:
             return math.sqrt((nodeCourant[0] - positionBot[0])**2 + (nodeCourant[1] - positionBot[1])**2)
 

@@ -42,23 +42,15 @@ def play():
         #niveau.add_joueur(joueur4)
 
         niveau.updateLvl()
-
+        
+        if(ia1.joueur.vivant ):
+             event_ia1 = threading.Event()
+             thread_ia1 = threading.Thread(target=ia1.dijkstra_move, args=(niveau,event_ia1))
+             thread_ia1.start()
 
     while True:
-        #PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
-        # PLAY_TEXT = get_font(45).render(
-        #     "LE JEU", True, "White")
-        # PLAY_RECT = PLAY_TEXT.get_rect(center=(640, 260))
-        # SCREEN.blit(PLAY_TEXT, PLAY_RECT)
-
-        # PLAY_BACK = Button(image=None, pos=(640, 460),
-        #                    text_input="Menu", font=get_font(75), base_color="White", hovering_color="Green")
-
-        # PLAY_BACK.changeColor(PLAY_MOUSE_POS)
-        # PLAY_BACK.update(SCREEN)
-
-        if(ia1.joueur.vivant):
+        if(ia1.joueur.vivant and thread_ia1.is_alive()==False):
              event_ia1 = threading.Event()
              thread_ia1 = threading.Thread(target=ia1.dijkstra_move, args=(niveau,event_ia1))
              thread_ia1.start()
