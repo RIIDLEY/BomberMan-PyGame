@@ -13,12 +13,23 @@ class ia:
         self.direction = ""
         self.liste_cible = niveau.arrayJoueur.copy()
         self.liste_cible.pop(joueur.id)
-        print(self.liste_cible)
-        self.cible = None
+        self.cible =  rand.choice(list(self.liste_cible.values()))
 
     def set_cible(self, cible):
         self.cible = cible
 
+    def get_cible(self):
+        return self.cible
+
+    def change_cible(self):
+        if (len(self.liste_cible) > 0):
+            self.cible = rand.choice(list(self.liste_cible.values()))
+
+    def check_cible_vivant(self):
+        if (self.cible.vivant == False):
+            self.liste_cible.pop(self.cible.id)
+            self.change_cible()
+        
     def dijkstra_chemin(self, niveau):
         # On récupère les coordonnées de la cible
         cible_pos = self.cible.get_pos()
@@ -82,6 +93,9 @@ class ia:
     def dijkstra_move(self, niveau, event):
         # On récupère les coordonnées de la cible
         event.wait(2)
+        
+        self.check_cible_vivant()
+
         cible_pos = self.cible.get_pos()
         # On récupère les coordonnées du joueur
         joueurIA_pos = self.joueur.get_pos()
@@ -107,32 +121,26 @@ class ia:
         for voisin in voisins:
             if grille[voisin[0]][voisin[1]] != 1 and (self.manhattan(voisin, cible_pos, niveau) <= self.manhattan(node_tmp, cible_pos, niveau)):
                 node_tmp = voisin
-        # print(node_tmp)
-        # print(joueurIA_pos)
-        if (grille[node_tmp[0]][node_tmp[1]] == 2 or (grille[node_tmp[0]][node_tmp[1]] > 10 and grille[node_tmp[0]][node_tmp[1]] < 20)):
-            print("Bombe")
+
+        if (grille[node_tmp[0]][node_tmp[1]] == 2 or (grille[node_tmp[0]][node_tmp[1]] > 10 and grille[node_tmp[0]][node_tmp[1]] < 20) and self.joueur.vivant == True):
             self.joueur.get_bombe().set_bombe(self.joueur,niveau)
             event_IA = threading.Event()
             thread_IA = threading.Thread(target=self.joueur.get_bombe().explose, args=(niveau,event_IA))
             thread_IA.start()
             event.wait(0.5)
             self.go_to_safe_place(niveau)
-        else:
+        elif(self.joueur.vivant == True):
             # se deplace vers le noeud le plus proche de la cible
             if node_tmp[1] > joueurIA_pos[1] and node_tmp[0] == joueurIA_pos[0]:
-                print('droite')
                 self.direction = "droite"
                 self.joueur.move_right(niveau)
             elif node_tmp[1] < joueurIA_pos[1] and node_tmp[0] == joueurIA_pos[0]:
-                print('gauche')
                 self.direction = "gauche"
                 self.joueur.move_left(niveau)
             elif node_tmp[1] == joueurIA_pos[1] and node_tmp[0] > joueurIA_pos[0]:
-                print('bas')
                 self.direction = "bas"
                 self.joueur.move_down(niveau)
             elif node_tmp[1] == joueurIA_pos[1] and node_tmp[0] < joueurIA_pos[0]:
-                print('haut')
                 self.direction = "haut"
                 self.joueur.move_up(niveau)
 

@@ -23,41 +23,35 @@ def play():
     SCREEN.fill("black")
     niveau = Niveau()
     niveau.generer()
-
-    if(niveau.init):
+    if (niveau.init):
         print("Init OK")
         joueur1 = joueur(image_joueur1)
-        joueur2 = joueur(image_joueur2)
+        # joueur2 = joueur(image_joueur2)
         joueur3 = joueur(image_joueur3)
-        joueur4 = joueur(image_joueur4)
-
-
-        #ia2 = ia(joueur4)
 
         niveau.add_joueur(joueur1)
-        niveau.add_joueur(joueur2)
+        # niveau.add_joueur(joueur2)
         niveau.add_joueur(joueur3)
-        #niveau.add_joueur(joueur4)
-
 
         ia1 = ia(joueur3, niveau)
-        ia1.set_cible(joueur2)
-        
-        niveau.updateLvl()
-        
-        if(ia1.joueur.vivant ):
-             event_ia1 = threading.Event()
-             thread_ia1 = threading.Thread(target=ia1.dijkstra_move, args=(niveau,event_ia1))
-             thread_ia1.start()
 
+        niveau.updateLvl()
+
+        if (ia1.joueur.vivant):
+            event_ia1 = threading.Event()
+            thread_ia1 = threading.Thread(
+                target=ia1.dijkstra_move, args=(niveau, event_ia1))
+            thread_ia1.start()
+    game_over()
     while True:
 
-        if(ia1.joueur.vivant and thread_ia1.is_alive()==False):
-             event_ia1 = threading.Event()
-             thread_ia1 = threading.Thread(target=ia1.dijkstra_move, args=(niveau,event_ia1))
-             thread_ia1.start()
+        if (ia1.joueur.vivant and thread_ia1.is_alive() == False):
+            event_ia1 = threading.Event()
+            thread_ia1 = threading.Thread(
+                target=ia1.dijkstra_move, args=(niveau, event_ia1))
+            thread_ia1.start()
 
-        if(niveau.partie_end()):
+        if (niveau.partie_end()):
             game_over()
 
         for event in pygame.event.get():
@@ -66,45 +60,45 @@ def play():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    #main_menu()
+                    main_menu()
+                if event.key == pygame.K_j:
                     ia1.dijkstra_chemin(niveau)
-                    ia1.dijkstra_move(niveau)
                 # Joueur 1
-                if event.key == pygame.K_RIGHT and joueur1.vivant==True:
+                if event.key == pygame.K_RIGHT and joueur1.vivant == True:
                     joueur1.move_right(niveau)
-                if event.key == pygame.K_LEFT and joueur1.vivant==True:
+                if event.key == pygame.K_LEFT and joueur1.vivant == True:
                     joueur1.move_left(niveau)
-                if event.key == pygame.K_UP and joueur1.vivant==True:
+                if event.key == pygame.K_UP and joueur1.vivant == True:
                     joueur1.move_up(niveau)
-                if event.key == pygame.K_DOWN and joueur1.vivant==True:
+                if event.key == pygame.K_DOWN and joueur1.vivant == True:
                     joueur1.move_down(niveau)
-                if event.key == pygame.K_SPACE and joueur1.vivant==True:
-                    if(joueur1.bombe.get_planted()==False):
+                if event.key == pygame.K_SPACE and joueur1.vivant == True:
+                    if (joueur1.bombe.get_planted() == False):
                         joueur1.get_bombe().set_bombe(joueur1, niveau)
                         event_joueur1 = threading.Event()
-                        thread_joueur1 = threading.Thread(target=joueur1.get_bombe().explose, args=(niveau,event_joueur1))
+                        thread_joueur1 = threading.Thread(
+                            target=joueur1.get_bombe().explose, args=(niveau, event_joueur1))
                         thread_joueur1.start()
-                        if(niveau.partie_end()):
-                            game_over()
-                        #bombe1.explose(niveau)
+                        # bombe1.explose(niveau)
 
                 # Joueur 2
-                if event.key == pygame.K_d and joueur2.vivant==True:
+                if event.key == pygame.K_d and joueur2.vivant == True:
                     joueur2.move_right(niveau)
-                if event.key == pygame.K_q and joueur2.vivant==True:
+                if event.key == pygame.K_q and joueur2.vivant == True:
                     joueur2.move_left(niveau)
-                if event.key == pygame.K_z and joueur2.vivant==True:
+                if event.key == pygame.K_z and joueur2.vivant == True:
                     joueur2.move_up(niveau)
-                if event.key == pygame.K_s and joueur2.vivant==True:
+                if event.key == pygame.K_s and joueur2.vivant == True:
                     joueur2.move_down(niveau)
-                if event.key == pygame.K_LSHIFT and joueur2.vivant==True:
-                    if(joueur2.bombe.get_planted()==False):
+                if event.key == pygame.K_LSHIFT and joueur2.vivant == True:
+                    if (joueur2.bombe.get_planted() == False):
                         joueur2.get_bombe().set_bombe(joueur2, niveau)
                         event_joueur2 = threading.Event()
-                        thread_joueur2 = threading.Thread(target=joueur2.get_bombe().explose, args=(niveau,event_joueur2))
+                        thread_joueur2 = threading.Thread(
+                            target=joueur2.get_bombe().explose, args=(niveau, event_joueur2))
                         thread_joueur2.start()
-                        
-                        #bombe2.explose(niveau)
+
+                        # bombe2.explose(niveau)
 
         pygame.display.update()
 
@@ -177,9 +171,9 @@ def main_menu():
 
 def game_over():
     while True:
+        SCREEN.fill("White")
         GAME_OVER_MOUSE_POS = pygame.mouse.get_pos()
         SCREEN = pygame.display.set_mode((1280, 720))
-        SCREEN.fill("white")
 
         GAME_OVER_TEXT = get_font(45).render(
             "GAME OVER", True, "Black")
