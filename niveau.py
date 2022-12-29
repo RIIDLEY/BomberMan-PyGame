@@ -11,8 +11,8 @@ class Niveau:
 
     def __init__(self):
         """initialisation des variables de la class"""
-        self.x = 60
-        self.y = 60
+        self.x = size_sprite
+        self.y = size_sprite
         self.init = False
         self.arrayJoueur = {}
         self.arrayBombes = {}
@@ -37,7 +37,7 @@ class Niveau:
         for y, line in enumerate(self.structure):
             for x, c in enumerate(line):
                 if (c==0):#Sol
-                    if(randrange(0, 100) < 0):
+                    if(randrange(0, 100) < 60):
                         a=1
                         #print("box")
                         self.screen.blit(image_box, (x*self.x, y*self.y))
@@ -76,7 +76,6 @@ class Niveau:
 
     def updateLvl(self):
         #print("Update Niveau")
-        print(self.arrayJoueur)
         for y, line in enumerate(self.structure):
             for x, c in enumerate(line):
                 if (c > 10 and c < 20 and c in self.arrayJoueur):#Joueur

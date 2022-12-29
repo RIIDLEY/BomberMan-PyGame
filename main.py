@@ -37,9 +37,7 @@ def play():
 
         ia1 = ia(joueur3, niveau)
 
-        niveau.printstructure()
         niveau.updateLvl()
-        niveau.printstructure()
 
         if (ia1.joueur.vivant):
             event_ia1 = threading.Event()
