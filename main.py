@@ -1,6 +1,7 @@
 import threading
 import pygame
 import sys
+import gc
 from niveau import *
 from joueur import *
 from bombe import *
@@ -24,17 +25,21 @@ def play():
     niveau.generer()
     if (niveau.init):
         print("Init OK")
-        joueur1 = joueur(image_joueur1)
-        # joueur2 = joueur(image_joueur2)
-        joueur3 = joueur(image_joueur3)
-
+        
+        joueur1 = joueur(image_joueur1,niveau)
         niveau.add_joueur(joueur1)
-        # niveau.add_joueur(joueur2)
+
+        joueur2 = joueur(image_joueur2,niveau)
+        niveau.add_joueur(joueur2)
+
+        joueur3 = joueur(image_joueur3,niveau)
         niveau.add_joueur(joueur3)
 
         ia1 = ia(joueur3, niveau)
 
+        niveau.printstructure()
         niveau.updateLvl()
+        niveau.printstructure()
 
         if (ia1.joueur.vivant):
             event_ia1 = threading.Event()
@@ -42,16 +47,13 @@ def play():
                 target=ia1.dijkstra_move, args=(niveau, event_ia1))
             thread_ia1.start()
 
-    while True:
+    while True and niveau.partie_end() == False:
 
         if (ia1.joueur.vivant and thread_ia1.is_alive() == False):
             event_ia1 = threading.Event()
             thread_ia1 = threading.Thread(
                 target=ia1.dijkstra_move, args=(niveau, event_ia1))
             thread_ia1.start()
-
-        if (niveau.partie_end()):
-            game_over()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -97,9 +99,12 @@ def play():
                             target=joueur2.get_bombe().explose, args=(niveau, event_joueur2))
                         thread_joueur2.start()
 
-                        # bombe2.explose(niveau)
-
         pygame.display.update()
+    
+    if(thread_ia1.is_alive()):
+        thread_ia1.join()
+    gc.collect()
+    game_over()
 
 
 def options():

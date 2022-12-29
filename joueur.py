@@ -1,16 +1,15 @@
-import pygame
 from constant import *
 import random as rand
 from bombe import *
-import time
-import calendar
 
 class joueur:
     """class du joueur"""
 
-    def __init__(self, sprite):
+    def __init__(self, sprite, niveau):
         """initialisation des variables de la class"""
-        self.id =  rand.randint(11,19)
+        self.id = rand.randint(11,19)
+        while (self.id in niveau.arrayJoueur):
+            self.id =  rand.randint(11,19)
         self.speed = 1
         self.ligne = 0
         self.colonne = 0

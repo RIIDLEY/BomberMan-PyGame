@@ -17,7 +17,18 @@ class Niveau:
         self.arrayJoueur = {}
         self.arrayBombes = {}
         self.screen = pygame.display.set_mode((1260, 720))
-        self.structure = grid
+        self.structure = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 9, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 1],
+        [1, 8, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 8, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 8, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 8, 1],
+        [1, 9, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
         #print("Init Niveau")
 
     def generer(self):
@@ -26,7 +37,7 @@ class Niveau:
         for y, line in enumerate(self.structure):
             for x, c in enumerate(line):
                 if (c==0):#Sol
-                    if(randrange(0, 100) < 60):
+                    if(randrange(0, 100) < 0):
                         a=1
                         #print("box")
                         self.screen.blit(image_box, (x*self.x, y*self.y))
@@ -65,9 +76,10 @@ class Niveau:
 
     def updateLvl(self):
         #print("Update Niveau")
+        print(self.arrayJoueur)
         for y, line in enumerate(self.structure):
             for x, c in enumerate(line):
-                if (c > 10 and c < 20):#Joueur
+                if (c > 10 and c < 20 and c in self.arrayJoueur):#Joueur
                     self.screen.blit(self.arrayJoueur[c].get_sprite(), (x * self.x, y * self.y))
                 if (c == 0):#sol
                     self.screen.blit(image_sol, (x * self.x, y * self.y))
@@ -104,4 +116,4 @@ class Niveau:
         return self.structure
     
     def get_taille(self):
-        return 12
+        return self.structure.__len__(), self.structure[0].__len__()

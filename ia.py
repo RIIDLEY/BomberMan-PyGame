@@ -92,7 +92,7 @@ class ia:
 
     def dijkstra_move(self, niveau, event):
         # On récupère les coordonnées de la cible
-        event.wait(2)
+        event.wait(1.5)
         
         self.check_cible_vivant()
 
@@ -103,7 +103,7 @@ class ia:
         # On récupère le niveau
         grille = niveau.get_grille()
         # On récupère la taille du niveau
-        taille = niveau.get_taille()
+        nb_ligne_grille, nb_colonne_grille = niveau.get_taille()
 
         # On initialise le dictionnaire des chemins
         chemins = defaultdict(list)
@@ -116,7 +116,7 @@ class ia:
 
         # Tant que la file n'est pas vide
 
-        voisins = self.get_voisins(joueurIA_pos, taille, niveau)
+        voisins = self.get_voisins(joueurIA_pos, nb_ligne_grille, nb_colonne_grille, niveau)
         node_tmp = voisins[0]
         for voisin in voisins:
             if grille[voisin[0]][voisin[1]] != 1 and (self.manhattan(voisin, cible_pos, niveau) <= self.manhattan(node_tmp, cible_pos, niveau)):
@@ -146,7 +146,7 @@ class ia:
 
         return node_tmp
 
-    def get_voisins(self, noeud, taille, niveau):
+    def get_voisins(self, noeud,  nb_ligne_grille, nb_colonne_grille, niveau):
         # On initialise la liste des voisins
         voisins = []
         # On récupère les coordonnées du noeud
@@ -156,13 +156,13 @@ class ia:
         if y > 0 and niveau.get_grille()[x][y-1] != 1:
             voisins.append((x, y - 1))
         # On ajoute les voisins du bas
-        if y < taille - 1 and niveau.get_grille()[x][y+1] != 1:
+        if y < nb_colonne_grille - 1 and niveau.get_grille()[x][y+1] != 1:
             voisins.append((x, y + 1))
         # On ajoute les voisins de gauche
         if x > 0 and niveau.get_grille()[x-1][y] != 1:
             voisins.append((x - 1, y))
         # On ajoute les voisins de droite
-        if x < taille - 1 and niveau.get_grille()[x+1][y] != 1:
+        if x < nb_ligne_grille - 1 and niveau.get_grille()[x+1][y] != 1:
             voisins.append((x + 1, y))
 
         # On retourne la liste des voisins
