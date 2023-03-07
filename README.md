@@ -1,4 +1,4 @@
-# Bomberman avec IA en Dijkstra
+# Bomberman avec IA Dijkstra
 
 ## Description
 
